@@ -1,13 +1,17 @@
-import Sidebar from "../components/SideBar.tsx/Sidebar"
-export default async function UsersLayout({children}:{children:React.ReactNode}){
-    return(
-        //@ts-expect-error Server component
+import React from 'react';
+import Sidebar from "../components/SideBar/Sidebar";
 
-        <Sidebar>
-            <div className="h-[100vh]">
-                {children}
-            </div>
-        </Sidebar>
-    )
-    
-};
+export default async function UsersLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    //@ts-ignore
+    <Sidebar>
+      <div className="h-[100vh]">
+        {children}
+      </div>
+      </Sidebar>
+  );
+}

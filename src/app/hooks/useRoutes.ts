@@ -2,32 +2,36 @@ import { signOut } from "next-auth/react";
 import useConversation from "./useConversation";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
+import { HiChatAlt } from "react-icons/hi";
+import { HiUsers } from "react-icons/hi2";
+import { IoIosLogOut } from "react-icons/io";
 
+const useRoutes = () => {
+  const pathName = usePathname();
+  const { conversationId } = useConversation();
 
-const useRoutes=()=>{
-    const pathName=usePathname();
-    const {conversationId}=useConversation();
-
-    const routes=useMemo(()=>[{
-        label:"Chat",
-        href:"/conversations",
-        icon:HiChat,
-        active:pathName==="/conversation" || !!conversationId
-    },
-
+  const routes = useMemo(() => [
     {
-        label:"Users",
-        href:"/users",
-        icon:HiUsers,
-        active:pathName==="/users" 
+      label: "Chat",
+      href: "/conversations",
+      icon: HiChatAlt,
+      active: pathName === "/conversations" || !!conversationId,
     },
     {
-        label:"LogOut",
-        href:"#",
-        icon:HiChat,
-onclick:()=>signOut();
+      label: "Users",
+      href: "/users",
+      icon: HiUsers,
+      active: pathName === "/users",
     },
-],[pathName,conversationId]
-)
-}
+    {
+      label: "LogOut",
+      href: "#",
+      icon: IoIosLogOut,
+      onClick: () => signOut(),
+    },
+  ], [pathName, conversationId]);
 
+  return routes; // Return the routes array
+};
+
+export default useRoutes;
