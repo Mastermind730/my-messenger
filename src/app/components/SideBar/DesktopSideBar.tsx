@@ -37,16 +37,17 @@ justify-between
   items-center
   space-y-1
   '>
-    {routes.map((item:any)=>{
-      
-      <DesktopItem
-      key={item.label}
-      href={item.href}
-      icon={item.icon}
-      active={item.active}
-      onClick={item.onClick}
-      />
-    })}
+   {routes.map((item) => (
+  <DesktopItem
+    key={item.label}
+    href={item.href}
+    label={item.label}
+    icon={item.icon}
+    active={item.active}
+    onclick={item.onClick}
+  />
+))}
+
 
   </ul>
 
