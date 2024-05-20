@@ -1,10 +1,9 @@
-import NextAuth from "next-auth/next";
+import NextAuth, { AuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
-import { AuthOptions } from "next-auth";
 
 const prisma = new PrismaClient();
 
@@ -50,11 +49,46 @@ export const authOptions: AuthOptions = {
             }
         })
     ],
+    callbacks: {
+        async signIn({ user, account, profile }) {
+            if (account?.provider === 'google' || account?.provider === 'github') {
+                const email = user.email as string;
+                const name = user.name || profile?.name;
+                // const image = user.image || profile?.avatar_url || profile?.picture;
+                const image = user.image ;
+
+                await prisma.user.upsert({
+                    where: { email },
+                    update: { name, image },
+                    create: {
+                        
+                        email,
+                        name,
+                        image,
+                        // Any other required fields can be added here
+                    },
+                });
+            }
+            return true;
+        },
+        async session({ session, token, user }) {
+            if (token) {
+                session.id = token.id;
+            }
+            return session;
+        },
+        async jwt({ token, user, account, profile }) {
+            if (user) {
+                token.id = user.id;
+            }
+            return token;
+        },
+    },
     debug: process.env.NODE_ENV === 'development',
     session: {
         strategy: "jwt",
     },
-    secret: process.env.NEXTAUTH_SECRET // Assuming `PUBLIC_NEXTAUTH_SECRET` should be `NEXTAUTH_SECRET`
+    secret: process.env.NEXTAUTH_SECRET
 };
 
 const handler = NextAuth(authOptions);
