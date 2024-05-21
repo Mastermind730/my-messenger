@@ -9,7 +9,9 @@ export async function POST(
 ){
     try{
         const currentUser=await getCurrentUser();
-        console.log(currentUser);
+        // console.log(currentUser);
+        // console.log("current user is ")
+        // console.log(currentUser)
         const body=await request.json();
         const{
             userId,

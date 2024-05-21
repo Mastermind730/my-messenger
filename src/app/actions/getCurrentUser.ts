@@ -6,7 +6,7 @@ const prisma=new PrismaClient();
 const getCurrentUser=async ()=>{
     try {
         const session=await getSession();
-        console.log(session);
+        // console.log(session);
         if(!session?.user?.email){
             return null;
         }
@@ -17,7 +17,7 @@ const getCurrentUser=async ()=>{
             }
         })
         if(!currentUser){
-            return session.user;
+            return null;
         }
         return currentUser;
 
