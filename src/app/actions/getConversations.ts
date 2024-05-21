@@ -1,42 +1,39 @@
 import { PrismaClient } from "@prisma/client";
 import getCurrentUser from "./getCurrentUser";
 
-const prisma=new PrismaClient();
-const getConversations=async ()=>{
-    const currentUser=await getCurrentUser();
- 
+const prisma = new PrismaClient();
 
-    if(!currentUser?.id){
+const getConversations = async () => {
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser?.id) {
         return [];
     }
 
-    try{
-        const conversations=await prisma.conversation.findMany({
-            orderBy:{
-                lastMessageAt:'desc'
+    try {
+        const conversations = await prisma.conversation.findMany({
+            orderBy: {
+                lastMessageAt: 'desc'
             },
-            where:{
-                userIds:{
-                    has:currentUser.id
+            where: {
+                userIds: {
+                    has: currentUser.id
                 }
             },
-            include:{
-                users:true,
-                messgages:{
-                    include:{
-                        sender:true,
-                        seen:true
+            include: {
+                users: true,
+                messages: {  // Fixed typo: "messgages" -> "messages"
+                    include: {
+                        sender: true,
+                        seen: true
                     }
                 }
             }
-        }
-
-        );
+        });
         return conversations;
-
-
-    }catch(error:any){
-            return [];
+    } catch (error: any) {
+        console.error("Error fetching conversations:", error);  // Optional: Log the error for debugging purposes
+        return [];
     }
 }
 
