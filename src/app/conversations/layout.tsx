@@ -13,7 +13,7 @@ export default async function UsersLayout({
 
     //@ts-ignore Server component
     <Sidebar>
-      <div className="h-[100vh]">
+      <div className="h-full">
         <ConversationList
             initialItems={conversations}
         />
