@@ -72,7 +72,7 @@ export const authOptions: AuthOptions = {
             return true;
         },
         async session({ session, token, user }) {
-            if (token) {
+            if (token && typeof token.id === 'string') {
                 session.id = token.id;
             }
             return session;
