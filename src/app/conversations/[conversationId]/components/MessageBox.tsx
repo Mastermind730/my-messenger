@@ -1,5 +1,6 @@
 "use client";
 import { FullMessageType } from '@/app/types';
+import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
 import React from 'react'
 
@@ -20,7 +21,17 @@ const MessageBox:React.FC<MessageBoxProps> = ({
   .map((user)=>user.name)
   .join(', ');
 
-  
+  const container=clsx(
+    "flex gap-2 p-4",
+    isOwn&& "justify-end"
+  );
+
+  const avatar=clsx(isOwn&& "order-2");
+
+  const body=clsx(
+    ""
+  )
+
   return (
     <div>MessageBox</div>
   )
