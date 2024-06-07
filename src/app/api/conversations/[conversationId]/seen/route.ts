@@ -1,6 +1,7 @@
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import { NextResponse } from "next/server";
 import prisma from "@/app/lib/prismadb";
+
 interface IParams {
   conversationId?: string;
 }
@@ -8,13 +9,13 @@ interface IParams {
 export async function POST(request: Request, { params }: { params: IParams }) {
   try {
     const currentUser = await getCurrentUser();
-
     const { conversationId } = params;
 
     if (!currentUser?.id || !currentUser?.email) {
-      return new NextResponse("Unauthorised", { status: 401 });
+      return new NextResponse("Unauthorized", { status: 401 });
     }
-    //find existing conversation
+
+    // Find existing conversation
     const conversation = await prisma.conversation.findUnique({
       where: {
         id: conversationId,
@@ -30,18 +31,18 @@ export async function POST(request: Request, { params }: { params: IParams }) {
     });
 
     if (!conversation) {
-      return new NextResponse("Invalid Id", { status: 400 });
+      return new NextResponse("Invalid ID", { status: 400 });
     }
 
-    //find the last message
+    // Find the last message
     const lastMessage = conversation.messages[conversation.messages.length - 1];
 
     if (!lastMessage) {
       return NextResponse.json(conversation);
     }
 
-    //update seen of last message
-    const updateMessage = await prisma.message.update({
+    // Update seen status of the last message
+    const updatedMessage = await prisma.message.update({
       where: {
         id: lastMessage.id,
       },
@@ -58,9 +59,9 @@ export async function POST(request: Request, { params }: { params: IParams }) {
       },
     });
 
-    return NextResponse.json(updateMessage);
+    return NextResponse.json(updatedMessage);
   } catch (error: any) {
-    console.log(error, "ERROR MESSAGES SEEN");
-    return new NextResponse("Internal Error", { status: 500 });
+    console.error(error, "ERROR MESSAGES SEEN");
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

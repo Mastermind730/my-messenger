@@ -14,7 +14,7 @@ try {
         image,
         conversationId
     }=body;
-
+    console.log(body);
     if(!currentUser?.id || !currentUser?.email){
         return new NextResponse("UnAuthorised",{status:401})
     }

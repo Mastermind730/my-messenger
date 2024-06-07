@@ -1,11 +1,12 @@
 "use client";
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Conversation,User } from '@prisma/client';
 import useOtherUser from '@/app/hooks/useOtherUser';
 import { HiChevronLeft } from 'react-icons/hi';
 import Link from 'next/link';
 import Avatar from '@/app/components/SideBar/Avatar';
 import { HiEllipsisHorizontal } from 'react-icons/hi2';
+import ProfileDrawer from './ProfileDrawer';
 interface HeaderProps{
     conversation:Conversation&{
         users:User[]
@@ -16,6 +17,7 @@ const Header:React.FC<HeaderProps> = ({
 conversation
 }) => {
     const otherUser=useOtherUser(conversation);
+    const [drawerOpen,setdrawerOpen]=useState(false);
     const statusText=useMemo(()=>{
         if(conversation.isGroup){
             return `${conversation.users.length} members`;
@@ -23,6 +25,12 @@ conversation
         return "Active";
     },[conversation])
   return (
+    <>
+    <ProfileDrawer
+    data={conversation}
+    isOpen={drawerOpen}
+    onClose={()=>setdrawerOpen(false)}
+    />
     <div className='bg-white w-full flex border-b-[1px] sm:px-4 py-3 px-4 lg:px-6 justify-between items-center shadow-sm'>
         <div className='flex gap-3 items-center'>
     <Link className="lg:hidden block text-sky-500 hover:text-sky-600 transition cursor-pointer " href={"/conversations"}>
@@ -46,6 +54,7 @@ conversation
         hover:text-sky-600
         transition'/>
     </div>
+    </>
   )
 }
 
