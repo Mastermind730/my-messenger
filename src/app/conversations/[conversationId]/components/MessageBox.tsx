@@ -46,40 +46,36 @@ const MessageBox:React.FC<MessageBoxProps> = ({
 
   return (
     <div className={container}>
-        <div className={avatar}>
-<Avatar user={data.sender}/>
-        </div>
-        <div className={body}>
-    <div className='flex items-center gap-1'>
-        <div className='text-sm text-gray-500'>
+      <div className={avatar}>
+        <Avatar user={data.sender} />
+      </div>
+      <div className={body}>
+        <div className='flex items-center gap-1'>
+          <div className='text-sm text-gray-500'>
             {data.sender.name}
+          </div>
+          <div className='text-xs text-gray-400'>
+            {format(new Date(data.createdAt), 'p')}
+          </div>
         </div>
-<div className='text-xs text-gray-400'>
-    {format(new Date(data.createdAt),'p')}
-
-</div>
-    </div>
-    <div className={message}>
-        {data.image?(
+        <div className={message}>
+          {data.image ? (
             <Image
-            alt='image'
-            height={288}
-            width={288}
-            src={data.image}
-            className='
-            object-cover
-            cursor-pointer
-            hover:scale-110
-            transition
-            translate'
+              alt='image'
+              height={288}
+              width={288}
+              src={data.image}
+              className='object-cover cursor-pointer hover:scale-110 transition translate'
             />
-        )}
-    </div>
+          ):(
+            <div>
+              {data.body}
+            </div>
+          )}
         </div>
-
-        
+      </div>
     </div>
-  )
+  );
 }
 
 export default MessageBox;
