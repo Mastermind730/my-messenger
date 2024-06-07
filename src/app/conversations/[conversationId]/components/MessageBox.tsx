@@ -25,14 +25,14 @@ const MessageBox:React.FC<MessageBoxProps> = ({
   .join(', ');
 
   const container=clsx(
-    "flex gap-2 p-4",
+    "flex gap-2 p-4 ",
     isOwn&& "justify-end"
   );
 
   const avatar=clsx(isOwn&& "order-2");
 
   const body=clsx(
-    "flex flex-col gap-2",
+    "flex flex-col gap-2 ",
     isOwn&& "items-end"
   );
 
@@ -62,8 +62,8 @@ const MessageBox:React.FC<MessageBoxProps> = ({
           {data.image ? (
             <Image
               alt='image'
-              height={288}
-              width={288}
+              height="288"
+              width="288"
               src={data.image}
               className='object-cover cursor-pointer hover:scale-110 transition translate'
             />
@@ -73,6 +73,11 @@ const MessageBox:React.FC<MessageBoxProps> = ({
             </div>
           )}
         </div>
+        {isLast && isOwn && seenList.length>0 &&(
+          <div className='text-xs font-light text-gray-500'>
+{`Seen by ${seenList}`}
+          </div>
+        )}
       </div>
     </div>
   );
