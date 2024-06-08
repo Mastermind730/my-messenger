@@ -48,7 +48,7 @@ conversation
         </div>
         <HiEllipsisHorizontal
         size={32}
-        onClick={()=>{}}
+        onClick={()=>setdrawerOpen(true)}
         className='text-sky-500 
         cursor-pointer
         hover:text-sky-600
