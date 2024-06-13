@@ -82,13 +82,30 @@ errors={errors}
         value:user.id,
         label:user.name
     }))}
-    onChange={(value)=>setValue("members",value,{
+    onChange={(value:any)=>setValue("members",value,{
         shouldValidate:true
     })}
     value={members}
 />
 </div>
         </div>
+    </div>
+    <div className='mt-6 flex items-center justify-end gap-x-6'>
+    <button
+        disabled={isLoading}
+        onClick={onClose}
+        type='button'
+          className="bg-gray-400 text-white font-bold py-2 px-4 rounded hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
+        >
+            Cancel
+        </button> 
+<button
+        disabled={isLoading}
+        type='submit'
+          className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+        >
+            Create
+        </button> 
     </div>
 </form>
     </Modal>
