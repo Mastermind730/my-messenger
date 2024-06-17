@@ -14,7 +14,7 @@ try {
         image,
         conversationId
     }=body;
-    console.log(body);
+    // console.log(body);
     if(!currentUser?.id || !currentUser?.email){
         return new NextResponse("UnAuthorised",{status:401})
     }
@@ -72,7 +72,7 @@ try {
     const lastMessage=updateConeversation.messages[updateConeversation.messages.length-1];
 
     updateConeversation.users.map((user)=>{
-pusherServer.trigger(user.email!,"conversation:upadte",{
+pusherServer.trigger(user.email!,"conversation:update",{
     id:conversationId,
     messages:[lastMessage]
 })
