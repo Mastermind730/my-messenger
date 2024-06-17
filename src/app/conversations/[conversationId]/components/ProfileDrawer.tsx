@@ -16,6 +16,7 @@ import Avatar from "@/app/components/SideBar/Avatar";
 import Modal from "@/app/components/Modal";
 import ConfirmModal from "./ConfirmModal";
 import AvatarGroup from "@/app/components/SideBar/AvatarGroup";
+import useActiveList from "@/app/hooks/useActiveList";
 
 interface ProfileDrawerProps {
   isOpen: boolean;
@@ -32,6 +33,8 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
 }) => {
   const otherUser = useOtherUser(data);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const {members}=useActiveList();
+  const isActive=members.indexOf(otherUser?.email!)!==-1;
 
   const joinedDate = useMemo(() => {
     return format(new Date(otherUser.createdAt), "PP");
@@ -46,8 +49,8 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
       return `${data.users.length} members`;
     }
 
-    return "Active";
-  }, [data]);
+    return isActive? "Active":"Offline";
+  }, [data,isActive]);
 
   const handleDeleteClick = () => {
     console.log("trash button clicked");
