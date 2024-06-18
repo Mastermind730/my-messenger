@@ -1,7 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
 import getCurrentUser from "./getCurrentUser";
-
-const prisma = new PrismaClient();
+import prisma from "@/app/lib/prismadb";
 
 const getConversations = async () => {
     const currentUser = await getCurrentUser();

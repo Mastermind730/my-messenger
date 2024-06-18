@@ -1,7 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
 import getSession from "./getSession";
+import prisma from "@/app/lib/prismadb";
 
-const prisma=new PrismaClient();
+// const prisma=new PrismaClient();
 const getUsers=async ()=>{
     const session=await getSession();
     if(!session?.user?.email){
