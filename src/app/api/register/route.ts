@@ -10,7 +10,7 @@ export  async function POST(req:Request){
     const body=await req.json();
     // console.log(body);
     const{name,email,password}=body;
-    console.log(name,email,password);
+    // console.log(name,email,password);
 
     if(!name ||!email ||!password){
         return new NextResponse("missing info",{status:400});
@@ -25,8 +25,8 @@ export  async function POST(req:Request){
             hashedPassword
         }
     });
-    console.log("user is:")
-    console.log(user)
+    // console.log("user is:")
+    // console.log(user)
 
     return NextResponse.json(user);
     }catch(error:any){

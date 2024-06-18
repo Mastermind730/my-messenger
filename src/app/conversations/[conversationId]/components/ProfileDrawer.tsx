@@ -53,7 +53,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
   }, [data,isActive]);
 
   const handleDeleteClick = () => {
-    console.log("trash button clicked");
+    // console.log("trash button clicked");
     setIsModalOpen(true);
   };
 

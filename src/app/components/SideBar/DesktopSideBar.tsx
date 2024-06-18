@@ -19,7 +19,7 @@ const DesktopSideBar:React.FC<DesktopSideBarProps> = ({
   const [isOpen,setOpen]=useState(false);
 
 
-  console.log(currentUser);
+  // console.log(currentUser);
   return (
     <>
     <SettingModal
