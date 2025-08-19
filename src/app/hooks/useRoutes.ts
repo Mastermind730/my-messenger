@@ -24,11 +24,17 @@ const useRoutes = () => {
       active: pathName === "/users",
     },
     {
-      label: "LogOut",
-      href: "#",
-      icon: IoIosLogOut,
-      onClick: () => signOut(),
-    },
+  label: "LogOut",
+  href: "#",
+  icon: IoIosLogOut,
+  onClick: async () => {
+    try {
+      await signOut({ redirect: true, callbackUrl: "/" });
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  },
+}
   ], [pathName, conversationId]);
 
   return routes; // Return the routes array
