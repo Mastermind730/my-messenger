@@ -34,7 +34,7 @@ const useRoutes = () => {
       console.error("Logout failed:", error);
     }
   },
-}
+},
   ], [pathName, conversationId]);
 
   return routes; // Return the routes array
