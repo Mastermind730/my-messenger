@@ -32,11 +32,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Get EC2 public IP
-        id: get-ip
-        run: |
-          EC2_HOST=$(aws ec2 describe-instances --instance-ids ${{ secrets.EC2_INSTANCE_ID }} --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
-          echo "EC2_HOST=$EC2_HOST" >> $GITHUB_ENV
+      
 
       - name: SSH into EC2 and manage app with PM2
         uses: appleboy/ssh-action@v1.0.3
