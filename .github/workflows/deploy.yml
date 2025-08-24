@@ -70,7 +70,7 @@ jobs:
             fi
 
             # Update Nginx configuration with the correct IP
-            sudo sed -i "s|^\s*server_name .*;|    server_name ${{ env.EC2_HOST }};|" /etc/nginx/sites-enabled/default
+            sudo sed -i "s|^\s*server_name .*;|    server_name ${{ secrets.EC2_HOST }};|" /etc/nginx/sites-enabled/default
             
             # Test Nginx configuration for syntax errors
             sudo nginx -t
