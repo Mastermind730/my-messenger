@@ -1,4 +1,4 @@
-name: Deploy to AWS EC2
+name: Deploy Next.js to EC2
 
 on:
   push:
@@ -25,17 +25,28 @@ jobs:
       - name: Build Next.js app
         run: npm run build
 
-      # --- S3 related steps are removed ---
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Get EC2 public IP
+        id: get-ip
+        run: |
+          EC2_HOST=$(aws ec2 describe-instances --instance-ids ${{ secrets.EC2_INSTANCE_ID }} --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
+          echo "EC2_HOST=$EC2_HOST" >> $GITHUB_ENV
 
       - name: SSH into EC2 and manage app with PM2
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.EC2_HOST }}
+          host: ${{ env.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             # Navigate to the project directory on EC2
-            cd /home/ubuntu/my-messenger
+            cd my-messenger
 
             # Pull the latest code from the main branch
             git pull origin main
@@ -52,8 +63,18 @@ jobs:
               # If it exists, restart the PM2 process
               pm2 restart my-messenger
             else
-              # If not, start a new PM2 process for the Next.js app on port 3000
+              # If not, start a new PM2 process
               pm2 start npm --name my-messenger -- run start -- -p 3000
               # Save the PM2 process list to restore on reboot
               pm2 save
             fi
+
+            # --- Update Nginx configuration with the new IP ---
+            # Use sed to replace the server_name with the dynamic IP from the workflow
+            sudo sed -i "s/^\\s*server_name .*;$/    server_name ${EC2_HOST};/" /etc/nginx/sites-available/default
+            
+            # Test Nginx configuration for syntax errors
+            sudo nginx -t
+
+            # Reload Nginx to apply changes
+            sudo systemctl reload nginx
