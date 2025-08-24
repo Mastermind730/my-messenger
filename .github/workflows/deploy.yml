@@ -46,7 +46,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             # Navigate to the project directory on EC2
-            cd my-messenger
+            cd /home/ubuntu/my-messenger
 
             # Pull the latest code from the main branch
             git pull origin main
@@ -69,9 +69,8 @@ jobs:
               pm2 save
             fi
 
-            # --- Update Nginx configuration with the new IP ---
-            # Use sed to replace the server_name with the dynamic IP from the workflow
-            sudo sed -i "s/^\\s*server_name .*;$/    server_name ${EC2_HOST};/" /etc/nginx/sites-available/default
+            # Update Nginx configuration with the correct IP
+            sudo sed -i "s|^\s*server_name .*;|    server_name ${{ env.EC2_HOST }};|" /etc/nginx/sites-enabled/default
             
             # Test Nginx configuration for syntax errors
             sudo nginx -t
