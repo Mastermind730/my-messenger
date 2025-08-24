@@ -32,21 +32,28 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-
       - name: Upload static assets to S3
         run: |
           aws s3 sync .next/static/ s3://my-messenger-assets-bucket/_next/static/ --delete
           aws s3 sync public/ s3://my-messenger-assets-bucket/ --delete
 
-      - name: SSH into EC2 and restart app
+      - name: SSH into EC2 and manage app with PM2
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd my-messenger
+            cd /home/ubuntu/my-messenger # Ensure this path is correct for your project
             git pull origin main
             npm install
             npm run build
-            pm2 restart my-messenger
+            # Check if the PM2 process exists before trying to restart
+            pm2 describe my-messenger > /dev/null
+            if [ $? -eq 0 ]; then
+              pm2 restart my-messenger
+            else
+              # If not, start a new PM2 process
+              pm2 start npm --name my-messenger -- run start -- -p 3000
+              pm2 save # Save the PM2 process list to restore on reboot
+            fi
