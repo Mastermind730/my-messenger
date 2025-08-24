@@ -34,8 +34,8 @@ jobs:
 
       - name: Upload static assets to S3
         run: |
-          aws s3 sync .next/static/ s3://my-messenger-assets-bucket/_next/static/ --acl public-read
-          aws s3 sync public/ s3://my-messenger-assets-bucket/ --acl public-read
+          aws s3 sync .next/static/ s3://my-messenger-assets-bucket/_next/static/ 
+          aws s3 sync public/ s3://my-messenger-assets-bucket/ 
 
       - name: SSH into EC2 and manage app with PM2
         uses: appleboy/ssh-action@v1.0.3
