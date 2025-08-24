@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    trailingSlash:true,
+    // trailingSlash:true,
     images: {
       domains: [
         "res.cloudinary.com",
@@ -9,8 +9,8 @@ const nextConfig = {
         "my-messenger-assets-bucket.s3.amazonaws.com",
       ]
     },
-    reactStrictMode:true,
-    assetPrefix: 'https://my-messenger-assets-bucket.s3.amazonaws.com/',
+    // reactStrictMode:true,
+    // assetPrefix: 'https://my-messenger-assets-bucket.s3.amazonaws.com/',
 
     // experimental: {
     //   swcPlugins: [
